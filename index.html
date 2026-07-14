@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>World Meeting Time Planner – Compare Time Zones for Beijing, London, Zurich & New York</title>
+<meta name="description" content="Drag the timeline to instantly compare local time across Beijing, London, Zurich, New York and more. A free visual tool for scheduling international meetings across time zones." />
+<meta name="robots" content="index, follow" />
+
+<!-- TODO: replace example.com with your real domain before deploying -->
+<link rel="canonical" href="https://example.com/" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%235b9dff'/%3E%3C/svg%3E" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="World Meeting Time Planner – Compare Time Zones for Beijing, London, Zurich & New York" />
+<meta property="og:description" content="Drag the timeline to instantly compare local time across Beijing, London, Zurich, New York and more. A free visual tool for scheduling international meetings across time zones." />
+<meta property="og:url" content="https://example.com/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="de_DE" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="World Meeting Time Planner" />
+<meta name="twitter:description" content="Drag the timeline to instantly compare local time across cities and schedule international meetings with ease." />
+
+<!-- Structured data: WebApplication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "World Meeting Time Planner",
+  "url": "https://example.com/",
+  "description": "A free drag-based visual timeline tool for comparing local time across multiple cities (Beijing, London, Zurich, New York and more) to schedule international meetings.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "inLanguage": ["en", "de"],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+
+<!-- Structured data: FAQPage (English defaults; keep in sync with js/i18n.js) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the tool handle daylight saving time?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each city's time is computed from its official IANA time zone, so daylight saving transitions are applied automatically and correctly for the current date."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I add cities other than the four defaults?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Use the \"Add city\" control to add any city from the list, and remove any row with its × button."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the tool save my selection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your chosen cities and language are saved in your browser's local storage, so they're remembered the next time you visit on the same device."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool send meeting invites?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It's a visual reference for finding a good time — copy the agreed time into your calendar or scheduling tool of choice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do some cities show a different date than others?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because time zones cross the international date line and UTC offsets differ, the same instant can fall on today in one city and tomorrow or yesterday in another."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this tool free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, the planner is free with no account required."
+      }
+    }
+  ]
+}
+</script>
+
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="container">
+
+  <header class="toolbar">
+    <div class="brand">
+      <h1 data-i18n="brand.name">World Meeting Planner</h1>
+      <p data-i18n="brand.tagline">Drag the timeline. See everyone's local time at once.</p>
+    </div>
+    <div class="controls">
+      <select id="citySelect" aria-label="Add city"></select>
+      <button id="addCityBtn" data-i18n="toolbar.addCity">Add city</button>
+      <button id="nowBtn" data-i18n="toolbar.now">Now</button>
+      <button id="langToggle">Deutsch</button>
+    </div>
+  </header>
+
+  <!-- Ad slot: leaderboard / responsive banner.
+       Replace this placeholder with your real AdSense <ins> tag + script once approved, e.g.:
+       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXX"
+            data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+  <div class="ad-slot" id="ad-top" data-i18n="ad.label">Advertisement</div>
+
+  <main>
+    <section class="legend" aria-hidden="true">
+      <span><span class="swatch work"></span> <span data-i18n="legend.work">Business hours (9–18)</span></span>
+      <span><span class="swatch edge"></span> <span data-i18n="legend.transition">Early / late</span></span>
+      <span><span class="swatch sleep"></span> <span data-i18n="legend.sleep">Off hours</span></span>
+    </section>
+
+    <section class="board-wrap" aria-label="Time zone comparison timeline">
+      <div class="board">
+        <div class="board-labels" id="boardLabels"></div>
+        <div class="board-tracks-wrap" id="boardTracks">
+          <div class="cursor-line" id="cursorLine"></div>
+        </div>
+      </div>
+    </section>
+    <p class="cursor-readout" id="cursorReadout"></p>
+
+    <!-- Ad slot: in-content rectangle. Replace with a real AdSense <ins> unit once approved. -->
+    <div class="ad-slot" id="ad-mid" data-i18n="ad.label">Advertisement</div>
+
+    <section class="content-section" id="how-to">
+      <h2 data-i18n="section.how.title">How to Use the Time Zone Planner</h2>
+      <ol class="how-list">
+        <li data-i18n="section.how.step1">The board opens with four default cities: Beijing, London, Zurich and New York.</li>
+        <li data-i18n="section.how.step2">Drag the vertical line across the timeline — or click anywhere on it — to move through the day.</li>
+        <li data-i18n="section.how.step3">Each city's local time and date update live as you drag, so you can see exactly what time it is for every participant.</li>
+        <li data-i18n="section.how.step4">Colored bands mark business hours (green), early/late hours (amber) and off hours (dark) for each city, making it easy to spot a slot that works for everyone.</li>
+        <li data-i18n="section.how.step5">Use "Add city" to bring in more locations, or the × button on a city to remove it.</li>
+        <li data-i18n="section.how.step6">Click "Now" to jump back to the current time at any point.</li>
+      </ol>
+    </section>
+
+    <section class="content-section" id="use-cases">
+      <h2 data-i18n="section.use.title">Use Cases</h2>
+      <div class="use-cases">
+        <div class="use-case-card">
+          <h3 data-i18n="section.use.case1.title">Distributed engineering standups</h3>
+          <p data-i18n="section.use.case1.body">Find a recurring meeting slot that lands during working hours for teams split across Asia, Europe and North America.</p>
+        </div>
+        <div class="use-case-card">
+          <h3 data-i18n="section.use.case2.title">Sales &amp; client calls</h3>
+          <p data-i18n="section.use.case2.body">Coordinate calls with prospects and clients in different regions without doing time-zone math by hand.</p>
+        </div>
+        <div class="use-case-card">
+          <h3 data-i18n="section.use.case3.title">Global product launches</h3>
+          <p data-i18n="section.use.case3.body">Plan a webinar or launch event start time that lands at a reasonable hour for your key markets.</p>
+        </div>
+        <div class="use-case-card">
+          <h3 data-i18n="section.use.case4.title">Academic &amp; research collaboration</h3>
+          <p data-i18n="section.use.case4.body">Align lab meetings and conference calls across international research partners.</p>
+        </div>
+        <div class="use-case-card">
+          <h3 data-i18n="section.use.case5.title">Remote hiring &amp; onboarding</h3>
+          <p data-i18n="section.use.case5.body">Schedule interviews and onboarding sessions that respect candidates' and new hires' local working hours.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="faq">
+      <h2 data-i18n="section.faq.title">Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h3 data-i18n="section.faq.q1">How does the tool handle daylight saving time?</h3>
+        <p data-i18n="section.faq.a1">Each city's time is computed from its official IANA time zone, so daylight saving transitions are applied automatically and correctly for the current date.</p>
+      </div>
+      <div class="faq-item">
+        <h3 data-i18n="section.faq.q2">Can I add cities other than the four defaults?</h3>
+        <p data-i18n="section.faq.a2">Yes. Use the "Add city" control to add any city from the list, and remove any row with its × button.</p>
+      </div>
+      <div class="faq-item">
+        <h3 data-i18n="section.faq.q3">Does the tool save my selection?</h3>
+        <p data-i18n="section.faq.a3">Your chosen cities and language are saved in your browser's local storage, so they're remembered the next time you visit on the same device.</p>
+      </div>
+      <div class="faq-item">
+        <h3 data-i18n="section.faq.q4">Does this tool send meeting invites?</h3>
+        <p data-i18n="section.faq.a4">No. It's a visual reference for finding a good time — copy the agreed time into your calendar or scheduling tool of choice.</p>
+      </div>
+      <div class="faq-item">
+        <h3 data-i18n="section.faq.q5">Why do some cities show a different date than others?</h3>
+        <p data-i18n="section.faq.a5">Because time zones cross the international date line and UTC offsets differ, the same instant can fall on "today" in one city and "tomorrow" or "yesterday" in another. The date shown under each city's time reflects that.</p>
+      </div>
+      <div class="faq-item">
+        <h3 data-i18n="section.faq.q6">Is this tool free to use?</h3>
+        <p data-i18n="section.faq.a6">Yes, the planner is free with no account required.</p>
+      </div>
+    </section>
+
+    <!-- Affiliate placeholder cards. Replace each href="#" with your real affiliate
+         tracking link (sign up for each program's affiliate/partner scheme first). -->
+    <section class="content-section" id="recommended-tools">
+      <h2 data-i18n="section.affiliate.title">Recommended Tools</h2>
+      <p class="affiliate-disclosure" data-i18n="section.affiliate.disclosure">Some links below are affiliate links. If you sign up through them, we may earn a small commission at no extra cost to you.</p>
+      <div class="use-cases">
+        <div class="use-case-card">
+          <h3 data-i18n="section.affiliate.notion.name">Notion</h3>
+          <p data-i18n="section.affiliate.notion.body">All-in-one workspace for notes, docs and project tracking — handy for writing up the meeting notes once you've found a time.</p>
+          <a class="affiliate-link" href="#" data-affiliate-placeholder="notion" target="_blank" rel="noopener noreferrer sponsored" data-i18n="section.affiliate.cta">Learn more</a>
+        </div>
+        <div class="use-case-card">
+          <h3 data-i18n="section.affiliate.trello.name">Trello</h3>
+          <p data-i18n="section.affiliate.trello.body">Simple kanban boards for tracking action items across distributed teams.</p>
+          <a class="affiliate-link" href="#" data-affiliate-placeholder="trello" target="_blank" rel="noopener noreferrer sponsored" data-i18n="section.affiliate.cta">Learn more</a>
+        </div>
+        <div class="use-case-card">
+          <h3 data-i18n="section.affiliate.slack.name">Slack</h3>
+          <p data-i18n="section.affiliate.slack.body">Team chat that keeps async conversations organized between synchronous meetings.</p>
+          <a class="affiliate-link" href="#" data-affiliate-placeholder="slack" target="_blank" rel="noopener noreferrer sponsored" data-i18n="section.affiliate.cta">Learn more</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ad slot: footer banner. Replace with a real AdSense <ins> unit once approved. -->
+    <div class="ad-slot" id="ad-bottom" data-i18n="ad.label">Advertisement</div>
+  </main>
+
+  <footer>
+    <p data-i18n="footer.text">Free visual time zone planner for cross-border teams.</p>
+  </footer>
+</div>
+
+<!-- Support button: replace the href with your own Buy Me a Coffee / Ko-fi page if different. -->
+<a
+  class="support-fab"
+  href="https://www.buymeacoffee.com/junping.koch"
+  target="_blank"
+  rel="noopener noreferrer"
+  data-i18n-title="support.tooltip"
+  title="Enjoyed this tool? Buy me a coffee"
+>
+  <span aria-hidden="true">☕</span>
+  <span data-i18n="support.btn">Buy me a coffee</span>
+</a>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
