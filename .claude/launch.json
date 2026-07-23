@@ -4,8 +4,13 @@
     {
       "name": "static-server",
       "runtimeExecutable": "py",
-      "runtimeArgs": ["-3", "-m", "http.server", "5500"],
-      "port": 5500
+      "runtimeArgs": [
+        "-3",
+        "-c",
+        "import os,functools,http.server,socketserver; port=int(os.environ.get('PORT','5500')); Handler=functools.partial(http.server.SimpleHTTPRequestHandler, directory='.'); socketserver.ThreadingTCPServer.allow_reuse_address=True; httpd=socketserver.ThreadingTCPServer(('127.0.0.1', port), Handler); httpd.serve_forever()"
+      ],
+      "port": 5500,
+      "autoPort": true
     }
   ]
 }
