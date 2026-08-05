@@ -33,7 +33,7 @@
   "description": "A free drag-based visual timeline tool for comparing local time across multiple cities (Beijing, London, Zurich, New York and more) to schedule international meetings.",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Any",
-  "inLanguage": ["en", "de"],
+  "inLanguage": ["zh", "en", "de"],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -143,7 +143,11 @@
       <select id="citySelect" aria-label="Add city"></select>
       <button id="addCityBtn" data-i18n="toolbar.addCity">Add city</button>
       <button id="nowBtn" data-i18n="toolbar.now">Now</button>
-      <button id="langToggle">Deutsch</button>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button class="lang-btn" data-lang="zh" type="button">中文</button>
+        <button class="lang-btn active" data-lang="en" type="button">EN</button>
+        <button class="lang-btn" data-lang="de" type="button">DE</button>
+      </div>
     </div>
   </header>
 
@@ -272,6 +276,12 @@
 
   <footer>
     <p data-i18n="footer.text">Free visual time zone planner for cross-border teams.</p>
+    <nav class="footer-links">
+      <a href="https://junpingkoch-web.github.io/about.html">About · 关于</a>
+      <a href="https://junpingkoch-web.github.io/contact.html">Contact · 联系</a>
+      <a href="https://junpingkoch-web.github.io/privacy.html">Privacy · 隐私</a>
+      <a href="https://junpingkoch-web.github.io/terms.html">Terms · 条款</a>
+    </nav>
   </footer>
 </div>
 

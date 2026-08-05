@@ -3,21 +3,21 @@
 // per-city local time conversion.
 
 const CITY_DB = [
-  { id: "shanghai", tz: "Asia/Shanghai", en: "Beijing", de: "Peking" },
-  { id: "london", tz: "Europe/London", en: "London", de: "London" },
-  { id: "zurich", tz: "Europe/Zurich", en: "Zurich", de: "Zürich" },
-  { id: "newyork", tz: "America/New_York", en: "New York", de: "New York" },
-  { id: "tokyo", tz: "Asia/Tokyo", en: "Tokyo", de: "Tokio" },
-  { id: "singapore", tz: "Asia/Singapore", en: "Singapore", de: "Singapur" },
-  { id: "dubai", tz: "Asia/Dubai", en: "Dubai", de: "Dubai" },
-  { id: "sydney", tz: "Australia/Sydney", en: "Sydney", de: "Sydney" },
-  { id: "losangeles", tz: "America/Los_Angeles", en: "Los Angeles", de: "Los Angeles" },
-  { id: "saopaulo", tz: "America/Sao_Paulo", en: "São Paulo", de: "São Paulo" },
-  { id: "paris", tz: "Europe/Paris", en: "Paris", de: "Paris" },
-  { id: "berlin", tz: "Europe/Berlin", en: "Berlin", de: "Berlin" },
-  { id: "moscow", tz: "Europe/Moscow", en: "Moscow", de: "Moskau" },
-  { id: "mumbai", tz: "Asia/Kolkata", en: "Mumbai", de: "Mumbai" },
-  { id: "toronto", tz: "America/Toronto", en: "Toronto", de: "Toronto" },
+  { id: "shanghai", tz: "Asia/Shanghai", en: "Beijing", de: "Peking", zh: "北京" },
+  { id: "london", tz: "Europe/London", en: "London", de: "London", zh: "伦敦" },
+  { id: "zurich", tz: "Europe/Zurich", en: "Zurich", de: "Zürich", zh: "苏黎世" },
+  { id: "newyork", tz: "America/New_York", en: "New York", de: "New York", zh: "纽约" },
+  { id: "tokyo", tz: "Asia/Tokyo", en: "Tokyo", de: "Tokio", zh: "东京" },
+  { id: "singapore", tz: "Asia/Singapore", en: "Singapore", de: "Singapur", zh: "新加坡" },
+  { id: "dubai", tz: "Asia/Dubai", en: "Dubai", de: "Dubai", zh: "迪拜" },
+  { id: "sydney", tz: "Australia/Sydney", en: "Sydney", de: "Sydney", zh: "悉尼" },
+  { id: "losangeles", tz: "America/Los_Angeles", en: "Los Angeles", de: "Los Angeles", zh: "洛杉矶" },
+  { id: "saopaulo", tz: "America/Sao_Paulo", en: "São Paulo", de: "São Paulo", zh: "圣保罗" },
+  { id: "paris", tz: "Europe/Paris", en: "Paris", de: "Paris", zh: "巴黎" },
+  { id: "berlin", tz: "Europe/Berlin", en: "Berlin", de: "Berlin", zh: "柏林" },
+  { id: "moscow", tz: "Europe/Moscow", en: "Moscow", de: "Moskau", zh: "莫斯科" },
+  { id: "mumbai", tz: "Asia/Kolkata", en: "Mumbai", de: "Mumbai", zh: "孟买" },
+  { id: "toronto", tz: "America/Toronto", en: "Toronto", de: "Toronto", zh: "多伦多" },
 ];
 
 const STORAGE_KEY = "tzplanner_state_v1";
@@ -32,12 +32,17 @@ const state = {
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
+    if (!raw) {
+      const nav = (navigator.language || "en").toLowerCase();
+      if (nav.indexOf("zh") === 0) state.lang = "zh";
+      else if (nav.indexOf("de") === 0) state.lang = "de";
+      return;
+    }
     const saved = JSON.parse(raw);
     if (Array.isArray(saved.cityIds) && saved.cityIds.length) {
       state.cityIds = saved.cityIds.filter((id) => CITY_DB.some((c) => c.id === id));
     }
-    if (saved.lang === "en" || saved.lang === "de") state.lang = saved.lang;
+    if (saved.lang === "en" || saved.lang === "de" || saved.lang === "zh") state.lang = saved.lang;
   } catch (e) {
     // ignore corrupt storage
   }
@@ -70,9 +75,10 @@ const dtfCache = new Map();
 function formatterFor(tz, lang) {
   const key = tz + "|" + lang;
   if (!dtfCache.has(key)) {
+    const locale = lang === "de" ? "de-DE" : lang === "zh" ? "zh-CN" : "en-GB";
     dtfCache.set(
       key,
-      new Intl.DateTimeFormat(lang === "de" ? "de-DE" : "en-GB", {
+      new Intl.DateTimeFormat(locale, {
         timeZone: tz,
         hour: "2-digit",
         minute: "2-digit",
@@ -248,7 +254,9 @@ function applyI18n() {
     const key = el.getAttribute("data-i18n-title");
     if (t[key] !== undefined) el.setAttribute("title", t[key]);
   });
-  document.getElementById("langToggle").textContent = t["toolbar.lang"];
+  document.querySelectorAll(".lang-switch .lang-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.lang === state.lang);
+  });
 }
 
 // ---------- Drag interaction ----------
@@ -309,11 +317,13 @@ document.getElementById("nowBtn").addEventListener("click", () => {
   updateCursor(currentFraction());
 });
 
-document.getElementById("langToggle").addEventListener("click", () => {
-  state.lang = state.lang === "en" ? "de" : "en";
-  saveState();
-  applyI18n();
-  render();
+document.querySelectorAll(".lang-switch .lang-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    state.lang = btn.dataset.lang;
+    saveState();
+    applyI18n();
+    render();
+  });
 });
 
 // ---------- Init ----------
