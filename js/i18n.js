@@ -1,7 +1,7 @@
 // Trilingual dictionary (zh/en/de). Add more keys/languages here.
 const I18N = {
   zh: {
-    "meta.title": "全球会议时区规划器 — 对比北京、伦敦、苏黎世和纽约的时间",
+    "meta.title": "全球会议时区规划器 — 实时对比全球时区",
     "meta.description": "拖动时间轴即可实时对比北京、伦敦、苏黎世、纽约等多个城市的当地时间。免费的可视化跨时区会议排期工具。",
     "brand.name": "全球会议时区规划器",
     "brand.tagline": "拖动时间轴，一眼看清所有人的当地时间。",
@@ -60,7 +60,7 @@ const I18N = {
     "section.affiliate.cta": "了解更多",
   },
   en: {
-    "meta.title": "World Meeting Time Planner – Compare Time Zones for Beijing, London, Zurich & New York",
+    "meta.title": "World Meeting Time Planner – Compare Time Zones Live",
     "meta.description": "Drag the timeline to instantly compare local time across Beijing, London, Zurich, New York and more. A free visual tool for scheduling international meetings across time zones.",
     "brand.name": "World Meeting Planner",
     "brand.tagline": "Drag the timeline. See everyone's local time at once.",
@@ -119,7 +119,7 @@ const I18N = {
     "section.affiliate.cta": "Learn more",
   },
   de: {
-    "meta.title": "Weltzeit-Terminplaner – Zeitzonen für Peking, London, Zürich & New York vergleichen",
+    "meta.title": "Weltzeit-Terminplaner – Zeitzonen live vergleichen",
     "meta.description": "Ziehen Sie den Zeitstrahl, um sofort die Ortszeit in Peking, London, Zürich, New York und weiteren Städten zu vergleichen. Ein kostenloses Tool zur Planung internationaler Meetings über Zeitzonen hinweg.",
     "brand.name": "Weltzeit-Terminplaner",
     "brand.tagline": "Zeitstrahl ziehen. Alle Ortszeiten auf einen Blick.",
