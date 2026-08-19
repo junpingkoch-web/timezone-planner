@@ -47,11 +47,17 @@ html, body {
 /* Toolbar */
 .toolbar {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.toolbar-top {
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 24px;
 }
 
 .brand h1 {
@@ -72,7 +78,7 @@ html, body {
   gap: 8px;
 }
 
-select, button {
+select, button, input[type="date"] {
   font: inherit;
   color: var(--text);
   background: var(--surface-2);
@@ -82,8 +88,10 @@ select, button {
   cursor: pointer;
 }
 
-button:hover, select:hover { border-color: var(--accent); }
-button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); }
+button:hover, select:hover, input[type="date"]:hover { border-color: var(--accent); }
+button:focus-visible, select:focus-visible, input[type="date"]:focus-visible { outline: 2px solid var(--accent); }
+
+.date-picker { color-scheme: light dark; }
 
 #nowBtn { font-weight: 600; }
 
@@ -169,10 +177,11 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); }
 }
 
 .label {
-  height: 56px;
+  height: 72px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 3px;
   padding: 4px 10px;
   border-bottom: 1px solid var(--border);
   position: relative;
@@ -186,9 +195,9 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); }
   justify-content: center;
 }
 
-.city-name { font-weight: 600; font-size: 0.95rem; }
-.city-time { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
-.city-meta { display: flex; gap: 8px; font-size: 0.75rem; color: var(--text-dim); }
+.city-name { font-weight: 600; font-size: 0.95rem; line-height: 1.2; }
+.city-time { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.city-meta { display: flex; gap: 8px; font-size: 0.75rem; color: var(--text-dim); line-height: 1.2; }
 
 .remove-btn {
   position: absolute;
@@ -206,7 +215,7 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); }
 .remove-btn:hover { color: var(--text); border-color: var(--border); background: var(--surface-2); }
 
 .track {
-  height: 56px;
+  height: 72px;
   display: flex;
   border-bottom: 1px solid var(--border);
 }
@@ -348,9 +357,16 @@ footer {
 .support-fab span[aria-hidden] { font-size: 1.1rem; }
 
 @media (max-width: 640px) {
-  :root { --label-width: 128px; }
+  /* 160px (not 128px) so the date+offset meta line fits on one line — at 128px it
+     wrapped to a second line, which overflowed the fixed-height row and bled into
+     the city below. */
+  :root { --label-width: 160px; }
   .city-time { font-size: 1.1rem; }
+  .city-meta { flex-wrap: nowrap; gap: 6px; }
+  .city-date { white-space: nowrap; }
   .board { min-width: 640px; }
+  .controls { width: 100%; }
+  .date-picker { flex: 1 1 auto; min-width: 0; }
   .support-fab span:not([aria-hidden]) { display: none; }
   .support-fab { padding: 12px; }
 }

@@ -136,19 +136,22 @@
 <div class="container">
 
   <header class="toolbar">
-    <div class="brand">
-      <h1 data-i18n="brand.name">World Meeting Planner</h1>
-      <p data-i18n="brand.tagline">Drag the timeline. See everyone's local time at once.</p>
-    </div>
-    <div class="controls">
-      <select id="citySelect" aria-label="Add city"></select>
-      <button id="addCityBtn" data-i18n="toolbar.addCity">Add city</button>
-      <button id="nowBtn" data-i18n="toolbar.now">Now</button>
+    <div class="toolbar-top">
+      <div class="brand">
+        <h1 data-i18n="brand.name">World Meeting Planner</h1>
+        <p data-i18n="brand.tagline">Drag the timeline. See everyone's local time at once.</p>
+      </div>
       <div class="lang-switch" role="group" aria-label="Language">
         <button class="lang-btn" data-lang="zh" type="button">中文</button>
         <button class="lang-btn" data-lang="en" type="button">EN</button>
         <button class="lang-btn active" data-lang="de" type="button">DE</button>
       </div>
+    </div>
+    <div class="controls">
+      <select id="citySelect" aria-label="Add city"></select>
+      <button id="addCityBtn" data-i18n="toolbar.addCity">Add city</button>
+      <input type="date" id="datePicker" class="date-picker" aria-label="Select date" />
+      <button id="nowBtn" data-i18n="toolbar.now">Now</button>
     </div>
   </header>
 
@@ -188,6 +191,7 @@
         <li data-i18n="section.how.step4">Colored bands mark business hours (green), early/late hours (amber) and off hours (dark) for each city, making it easy to spot a slot that works for everyone.</li>
         <li data-i18n="section.how.step5">Use "Add city" to bring in more locations, or the × button on a city to remove it.</li>
         <li data-i18n="section.how.step6">Click "Now" to jump back to the current time at any point.</li>
+        <li data-i18n="section.how.step7">Use the date picker to check any past or future date — handy for confirming how each city's time shifts around daylight saving changes.</li>
       </ol>
     </section>
 
