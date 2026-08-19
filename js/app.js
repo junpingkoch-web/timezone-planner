@@ -3,58 +3,22 @@
 // per-city local time conversion.
 
 const CITY_DB = [
-  // Asia-Pacific
-  { id: "shanghai", tz: "Asia/Shanghai", en: "Beijing", de: "Peking", zh: "北京", region: "apac" },
-  { id: "tokyo", tz: "Asia/Tokyo", en: "Tokyo", de: "Tokio", zh: "东京", region: "apac" },
-  { id: "singapore", tz: "Asia/Singapore", en: "Singapore", de: "Singapur", zh: "新加坡", region: "apac" },
-  { id: "sydney", tz: "Australia/Sydney", en: "Sydney", de: "Sydney", zh: "悉尼", region: "apac" },
-  { id: "mumbai", tz: "Asia/Kolkata", en: "Mumbai", de: "Mumbai", zh: "孟买", region: "apac" },
-  { id: "hongkong", tz: "Asia/Hong_Kong", en: "Hong Kong", de: "Hongkong", zh: "香港", region: "apac" },
-  { id: "seoul", tz: "Asia/Seoul", en: "Seoul", de: "Seoul", zh: "首尔", region: "apac" },
-  { id: "taipei", tz: "Asia/Taipei", en: "Taipei", de: "Taipeh", zh: "台北", region: "apac" },
-  { id: "bangkok", tz: "Asia/Bangkok", en: "Bangkok", de: "Bangkok", zh: "曼谷", region: "apac" },
-  { id: "jakarta", tz: "Asia/Jakarta", en: "Jakarta", de: "Jakarta", zh: "雅加达", region: "apac" },
-  { id: "kualalumpur", tz: "Asia/Kuala_Lumpur", en: "Kuala Lumpur", de: "Kuala Lumpur", zh: "吉隆坡", region: "apac" },
-  { id: "manila", tz: "Asia/Manila", en: "Manila", de: "Manila", zh: "马尼拉", region: "apac" },
-  { id: "newdelhi", tz: "Asia/Kolkata", en: "New Delhi", de: "Neu-Delhi", zh: "新德里", region: "apac" },
-  { id: "auckland", tz: "Pacific/Auckland", en: "Auckland", de: "Auckland", zh: "奥克兰", region: "apac" },
-  // Europe
-  { id: "london", tz: "Europe/London", en: "London", de: "London", zh: "伦敦", region: "europe" },
-  { id: "zurich", tz: "Europe/Zurich", en: "Zurich", de: "Zürich", zh: "苏黎世", region: "europe" },
-  { id: "paris", tz: "Europe/Paris", en: "Paris", de: "Paris", zh: "巴黎", region: "europe" },
-  { id: "berlin", tz: "Europe/Berlin", en: "Berlin", de: "Berlin", zh: "柏林", region: "europe" },
-  { id: "moscow", tz: "Europe/Moscow", en: "Moscow", de: "Moskau", zh: "莫斯科", region: "europe" },
-  { id: "frankfurt", tz: "Europe/Berlin", en: "Frankfurt", de: "Frankfurt", zh: "法兰克福", region: "europe" },
-  { id: "amsterdam", tz: "Europe/Amsterdam", en: "Amsterdam", de: "Amsterdam", zh: "阿姆斯特丹", region: "europe" },
-  { id: "madrid", tz: "Europe/Madrid", en: "Madrid", de: "Madrid", zh: "马德里", region: "europe" },
-  { id: "milan", tz: "Europe/Rome", en: "Milan", de: "Mailand", zh: "米兰", region: "europe" },
-  { id: "vienna", tz: "Europe/Vienna", en: "Vienna", de: "Wien", zh: "维也纳", region: "europe" },
-  { id: "stockholm", tz: "Europe/Stockholm", en: "Stockholm", de: "Stockholm", zh: "斯德哥尔摩", region: "europe" },
-  { id: "warsaw", tz: "Europe/Warsaw", en: "Warsaw", de: "Warschau", zh: "华沙", region: "europe" },
-  { id: "dublin", tz: "Europe/Dublin", en: "Dublin", de: "Dublin", zh: "都柏林", region: "europe" },
-  { id: "brussels", tz: "Europe/Brussels", en: "Brussels", de: "Brüssel", zh: "布鲁塞尔", region: "europe" },
-  // Americas
-  { id: "newyork", tz: "America/New_York", en: "New York", de: "New York", zh: "纽约", region: "americas" },
-  { id: "losangeles", tz: "America/Los_Angeles", en: "Los Angeles", de: "Los Angeles", zh: "洛杉矶", region: "americas" },
-  { id: "saopaulo", tz: "America/Sao_Paulo", en: "São Paulo", de: "São Paulo", zh: "圣保罗", region: "americas" },
-  { id: "toronto", tz: "America/Toronto", en: "Toronto", de: "Toronto", zh: "多伦多", region: "americas" },
-  { id: "chicago", tz: "America/Chicago", en: "Chicago", de: "Chicago", zh: "芝加哥", region: "americas" },
-  { id: "sanfrancisco", tz: "America/Los_Angeles", en: "San Francisco", de: "San Francisco", zh: "旧金山", region: "americas" },
-  { id: "mexicocity", tz: "America/Mexico_City", en: "Mexico City", de: "Mexiko-Stadt", zh: "墨西哥城", region: "americas" },
-  { id: "buenosaires", tz: "America/Argentina/Buenos_Aires", en: "Buenos Aires", de: "Buenos Aires", zh: "布宜诺斯艾利斯", region: "americas" },
-  { id: "bogota", tz: "America/Bogota", en: "Bogotá", de: "Bogotá", zh: "波哥大", region: "americas" },
-  { id: "santiago", tz: "America/Santiago", en: "Santiago", de: "Santiago de Chile", zh: "圣地亚哥", region: "americas" },
-  // Middle East & Africa
-  { id: "dubai", tz: "Asia/Dubai", en: "Dubai", de: "Dubai", zh: "迪拜", region: "mea" },
-  { id: "telaviv", tz: "Asia/Jerusalem", en: "Tel Aviv", de: "Tel Aviv", zh: "特拉维夫", region: "mea" },
-  { id: "riyadh", tz: "Asia/Riyadh", en: "Riyadh", de: "Riad", zh: "利雅得", region: "mea" },
-  { id: "istanbul", tz: "Europe/Istanbul", en: "Istanbul", de: "Istanbul", zh: "伊斯坦布尔", region: "mea" },
-  { id: "cairo", tz: "Africa/Cairo", en: "Cairo", de: "Kairo", zh: "开罗", region: "mea" },
-  { id: "johannesburg", tz: "Africa/Johannesburg", en: "Johannesburg", de: "Johannesburg", zh: "约翰内斯堡", region: "mea" },
-  { id: "lagos", tz: "Africa/Lagos", en: "Lagos", de: "Lagos", zh: "拉各斯", region: "mea" },
+  { id: "shanghai", tz: "Asia/Shanghai", en: "Beijing", de: "Peking", zh: "北京" },
+  { id: "london", tz: "Europe/London", en: "London", de: "London", zh: "伦敦" },
+  { id: "zurich", tz: "Europe/Zurich", en: "Zurich", de: "Zürich", zh: "苏黎世" },
+  { id: "newyork", tz: "America/New_York", en: "New York", de: "New York", zh: "纽约" },
+  { id: "tokyo", tz: "Asia/Tokyo", en: "Tokyo", de: "Tokio", zh: "东京" },
+  { id: "singapore", tz: "Asia/Singapore", en: "Singapore", de: "Singapur", zh: "新加坡" },
+  { id: "dubai", tz: "Asia/Dubai", en: "Dubai", de: "Dubai", zh: "迪拜" },
+  { id: "sydney", tz: "Australia/Sydney", en: "Sydney", de: "Sydney", zh: "悉尼" },
+  { id: "losangeles", tz: "America/Los_Angeles", en: "Los Angeles", de: "Los Angeles", zh: "洛杉矶" },
+  { id: "saopaulo", tz: "America/Sao_Paulo", en: "São Paulo", de: "São Paulo", zh: "圣保罗" },
+  { id: "paris", tz: "Europe/Paris", en: "Paris", de: "Paris", zh: "巴黎" },
+  { id: "berlin", tz: "Europe/Berlin", en: "Berlin", de: "Berlin", zh: "柏林" },
+  { id: "moscow", tz: "Europe/Moscow", en: "Moscow", de: "Moskau", zh: "莫斯科" },
+  { id: "mumbai", tz: "Asia/Kolkata", en: "Mumbai", de: "Mumbai", zh: "孟买" },
+  { id: "toronto", tz: "America/Toronto", en: "Toronto", de: "Toronto", zh: "多伦多" },
 ];
-
-const CITY_REGION_ORDER = ["apac", "europe", "americas", "mea"];
 
 const STORAGE_KEY = "tzplanner_state_v1";
 const DEFAULT_CITY_IDS = ["shanghai", "london", "zurich", "newyork"];
@@ -106,54 +70,38 @@ function currentFraction() {
   return (now.getTime() - midnight) / 86400000;
 }
 
-// Cache one Intl.DateTimeFormat per timezone/locale (construction is relatively expensive).
-// Time and date are formatted separately: hour/minute are locale-independent numbers we
-// render ourselves, while the date label is handed to Intl's own .format() so each locale's
-// correct unit characters and word order (e.g. zh-CN "8月20日 周四" vs en-GB "Thu 20 Aug") are
-// preserved instead of being reconstructed by hand in a fixed Western order.
-const timeFmtCache = new Map();
-function timeFormatterFor(tz) {
-  if (!timeFmtCache.has(tz)) {
-    timeFmtCache.set(
-      tz,
-      new Intl.DateTimeFormat("en-GB", {
+// Cache one Intl.DateTimeFormat per timezone (construction is relatively expensive).
+const dtfCache = new Map();
+function formatterFor(tz, lang) {
+  const key = tz + "|" + lang;
+  if (!dtfCache.has(key)) {
+    const locale = lang === "de" ? "de-DE" : lang === "zh" ? "zh-CN" : "en-GB";
+    dtfCache.set(
+      key,
+      new Intl.DateTimeFormat(locale, {
         timeZone: tz,
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
-      })
-    );
-  }
-  return timeFmtCache.get(tz);
-}
-
-const dateFmtCache = new Map();
-function dateFormatterFor(tz, lang) {
-  const key = tz + "|" + lang;
-  if (!dateFmtCache.has(key)) {
-    const locale = lang === "de" ? "de-DE" : lang === "zh" ? "zh-CN" : "en-GB";
-    dateFmtCache.set(
-      key,
-      new Intl.DateTimeFormat(locale, {
-        timeZone: tz,
         weekday: "short",
         day: "2-digit",
         month: "short",
       })
     );
   }
-  return dateFmtCache.get(key);
+  return dtfCache.get(key);
 }
 
 function localPartsForCity(epochMs, tz) {
-  const date = new Date(epochMs);
-  const timeParts = timeFormatterFor(tz).formatToParts(date);
+  const parts = formatterFor(tz, state.lang).formatToParts(new Date(epochMs));
   const map = {};
-  for (const p of timeParts) map[p.type] = p.value;
+  for (const p of parts) map[p.type] = p.value;
   return {
     hour: parseInt(map.hour, 10),
     minute: parseInt(map.minute, 10),
-    dateLabel: dateFormatterFor(tz, state.lang).format(date),
+    weekday: map.weekday,
+    day: map.day,
+    month: map.month,
   };
 }
 
@@ -259,7 +207,7 @@ function updateCursor(fraction) {
   const utcParts = localPartsForCity(epoch, "UTC");
   cursorReadout.textContent = `UTC ${String(utcParts.hour).padStart(2, "0")}:${String(
     utcParts.minute
-  ).padStart(2, "0")} · ${utcParts.dateLabel}`;
+  ).padStart(2, "0")} · ${utcParts.weekday} ${utcParts.day} ${utcParts.month}`;
 
   for (const id of state.cityIds) {
     const city = cityById(id);
@@ -272,7 +220,7 @@ function updateCursor(fraction) {
       timeEl.textContent = `${String(parts.hour).padStart(2, "0")}:${String(
         parts.minute
       ).padStart(2, "0")}`;
-    if (dateEl) dateEl.textContent = parts.dateLabel;
+    if (dateEl) dateEl.textContent = `${parts.weekday} ${parts.day} ${parts.month}`;
     if (offEl) offEl.textContent = offsetLabelFor(epoch, city.tz);
   }
 }
@@ -280,18 +228,12 @@ function updateCursor(fraction) {
 function populateCitySelect() {
   const t = I18N[state.lang];
   citySelect.innerHTML = `<option value="">${t["toolbar.addCityPlaceholder"]}</option>`;
-  for (const region of CITY_REGION_ORDER) {
-    const cities = CITY_DB.filter((c) => c.region === region && !state.cityIds.includes(c.id));
-    if (!cities.length) continue;
-    const group = document.createElement("optgroup");
-    group.label = t["region." + region];
-    for (const city of cities) {
-      const opt = document.createElement("option");
-      opt.value = city.id;
-      opt.textContent = city[state.lang];
-      group.appendChild(opt);
-    }
-    citySelect.appendChild(group);
+  for (const city of CITY_DB) {
+    if (state.cityIds.includes(city.id)) continue;
+    const opt = document.createElement("option");
+    opt.value = city.id;
+    opt.textContent = city[state.lang];
+    citySelect.appendChild(opt);
   }
 }
 

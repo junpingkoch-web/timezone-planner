@@ -169,11 +169,10 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); }
 }
 
 .label {
-  height: 72px;
+  height: 56px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 3px;
   padding: 4px 10px;
   border-bottom: 1px solid var(--border);
   position: relative;
@@ -187,9 +186,9 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); }
   justify-content: center;
 }
 
-.city-name { font-weight: 600; font-size: 0.95rem; line-height: 1.2; }
-.city-time { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
-.city-meta { display: flex; gap: 8px; font-size: 0.75rem; color: var(--text-dim); line-height: 1.2; }
+.city-name { font-weight: 600; font-size: 0.95rem; }
+.city-time { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.city-meta { display: flex; gap: 8px; font-size: 0.75rem; color: var(--text-dim); }
 
 .remove-btn {
   position: absolute;
@@ -207,7 +206,7 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); }
 .remove-btn:hover { color: var(--text); border-color: var(--border); background: var(--surface-2); }
 
 .track {
-  height: 72px;
+  height: 56px;
   display: flex;
   border-bottom: 1px solid var(--border);
 }
