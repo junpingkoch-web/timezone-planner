@@ -380,6 +380,7 @@ document.getElementById("addCityBtn").addEventListener("click", () => {
   state.cityIds.push(id);
   saveState();
   render();
+  if (typeof gtag === "function") gtag("event", "tool_result_generated", { tool_name: "timezone-planner" });
 });
 
 boardLabels.addEventListener("click", (e) => {
