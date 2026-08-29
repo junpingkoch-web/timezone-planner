@@ -221,7 +221,14 @@ function render() {
   datePicker.value = state.dateStr || todayDateStr();
 
   boardLabels.innerHTML = "";
+  // boardTracks.innerHTML = "" also discards #cursorLine -- it's a child of
+  // this same wrapper, not a sibling, and isn't one of the track elements
+  // rebuilt below. That silently detached it from the document on every
+  // render(), including the very first one at page load, so the draggable
+  // cursor line was never actually visible on screen. Re-append the same
+  // (still JS-referenced) node afterward rather than recreating it.
   boardTracks.innerHTML = "";
+  boardTracks.appendChild(cursorLine);
 
   // Reference UTC ruler
   const rulerLabel = document.createElement("div");
@@ -277,9 +284,13 @@ function updateCursor(fraction) {
   cursorLine.style.left = fraction * 100 + "%";
 
   const utcParts = localPartsForCity(epoch, "UTC");
-  cursorReadout.textContent = `UTC ${String(utcParts.hour).padStart(2, "0")}:${String(
-    utcParts.minute
-  ).padStart(2, "0")} · ${utcParts.dateLabel}`;
+  const utcTimeStr = `${String(utcParts.hour).padStart(2, "0")}:${String(utcParts.minute).padStart(2, "0")}`;
+  cursorReadout.textContent = `UTC ${utcTimeStr} · ${utcParts.dateLabel}`;
+
+  // Keep the slider's accessible value in sync so a screen reader announces the
+  // actual time on every keyboard adjustment, not just the visual cursor position.
+  boardTracks.setAttribute("aria-valuenow", String(utcParts.hour * 60 + utcParts.minute));
+  boardTracks.setAttribute("aria-valuetext", `UTC ${utcTimeStr}, ${utcParts.dateLabel}`);
 
   for (const id of state.cityIds) {
     const city = cityById(id);
@@ -333,7 +344,9 @@ function applyI18n() {
     if (t[key] !== undefined) el.setAttribute("title", t[key]);
   });
   document.querySelectorAll(".lang-switch .lang-btn").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.lang === state.lang);
+    const isActive = btn.dataset.lang === state.lang;
+    btn.classList.toggle("active", isActive);
+    btn.setAttribute("aria-pressed", isActive ? "true" : "false");
   });
   datePicker.setAttribute("aria-label", t["toolbar.dateAria"]);
 }
@@ -371,6 +384,47 @@ function endDrag(e) {
 }
 boardTracks.addEventListener("pointerup", endDrag);
 boardTracks.addEventListener("pointercancel", endDrag);
+
+// Keyboard alternative to the pointer drag above -- the board is otherwise
+// only operable by mouse/touch, which locks keyboard-only and switch-device
+// users out of the tool's core interaction entirely, not just a polish gap.
+const MINUTE_STEP = 15 / 1440; // 15 minutes, expressed as a fraction of a day
+boardTracks.addEventListener("keydown", (e) => {
+  switch (e.key) {
+    case "ArrowLeft":
+    case "ArrowDown":
+      state.fraction = Math.min(Math.max(currentFraction() - MINUTE_STEP, 0), 0.999999);
+      updateCursor(state.fraction);
+      e.preventDefault();
+      break;
+    case "ArrowRight":
+    case "ArrowUp":
+      state.fraction = Math.min(Math.max(currentFraction() + MINUTE_STEP, 0), 0.999999);
+      updateCursor(state.fraction);
+      e.preventDefault();
+      break;
+    case "Home":
+      state.fraction = 0;
+      updateCursor(state.fraction);
+      e.preventDefault();
+      break;
+    case "End":
+      state.fraction = 0.999999;
+      updateCursor(state.fraction);
+      e.preventDefault();
+      break;
+    case "Enter":
+    case " ":
+      // Same reset as the "Now" button.
+      state.fraction = null;
+      state.dateStr = null;
+      render();
+      e.preventDefault();
+      break;
+    default:
+      return;
+  }
+});
 
 // ---------- Controls ----------
 
