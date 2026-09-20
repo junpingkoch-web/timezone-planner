@@ -342,13 +342,7 @@ button:focus-visible, select:focus-visible, input[type="date"]:focus-visible { o
 .faq-item h3 { margin: 0 0 6px; font-size: 1rem; }
 .faq-item p { margin: 0; color: var(--text-dim); line-height: 1.6; }
 
-.affiliate-disclosure {
-  color: var(--text-dim);
-  font-size: 0.8rem;
-  font-style: italic;
-  margin: 0 0 16px;
-}
-#recommended-tools .use-case-card p { margin-bottom: 10px; }
+.faq-item p + p { margin-top: 10px; }
 .affiliate-link {
   display: inline-block;
   font-size: 0.85rem;
