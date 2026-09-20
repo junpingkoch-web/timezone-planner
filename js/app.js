@@ -61,7 +61,7 @@ const DEFAULT_CITY_IDS = ["shanghai", "london", "zurich", "newyork"];
 
 const state = {
   cityIds: [...DEFAULT_CITY_IDS],
-  lang: "de",
+  lang: "en",
   fraction: null, // 0..1 within the selected UTC day; null = follow "now"
   dateStr: null, // "YYYY-MM-DD" (UTC) picked via the date input; null = today
 };
